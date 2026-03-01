@@ -70,9 +70,19 @@ button{
   }
 }
 
+@keyframes slowZoomIn {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+
 @keyframes finalFocus{
   from { opacity:0; transform:scale(0.95); }
   to { opacity:1; transform:scale(1); }
+}
+
+.zoom-image{
+  max-height:75vh;
+  animation: slowZoomIn 20s ease-in-out forwards;
 }
 
 .final-name{
@@ -80,6 +90,21 @@ button{
   animation:finalFocus 4s ease forwards;
   animation-delay:14s;
   font-size:28px;
+}
+
+.hidden-message{
+  position:fixed;
+  bottom:40px;
+  width:100%;
+  text-align:center;
+  font-size:14px;
+  opacity:0;
+  color:rgba(255,255,255,0.8);
+  transition:opacity 1.5s ease;
+}
+
+.hidden-message.show{
+  opacity:1;
 }
 
 img{
@@ -96,19 +121,9 @@ img{
 
 <!-- Intro -->
 <div id="intro"
-style="
-position:fixed;
-width:100%;
-height:100%;
-background:black;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:9999;
-color:white;
-font-size:24px;
-">
+style="position:fixed;width:100%;height:100%;background:black;
+display:flex;justify-content:center;align-items:center;
+flex-direction:column;z-index:9999;color:white;font-size:24px;">
 <div style="font-size:50px;">❤️</div>
 <p>Eine kleine Nachricht für dich…</p>
 </div>
@@ -149,38 +164,18 @@ Willst du sehen, was ich damit meine?
 <div id="page3" class="page" style="background:black;">
 <div class="card">
 <img src="bild3.jpg">
-
 <p>
-<span class="fade" style="animation-delay:1s;">
-„Zwei sind besser als einer,
-</span><br>
-
-<span class="fade" style="animation-delay:4s;">
-denn wenn einer fällt, hilft ihm der andere wieder auf.“
-</span><br><br>
-
-<span class="fade" style="animation-delay:7s;">
-„Jemand kann einen Einzelnen leicht überwältigen,
-</span><br>
-
-<span class="fade" style="animation-delay:10s;">
-doch zwei zusammen können gegen ihn standhalten.
-</span><br>
-
-<span class="fade" style="animation-delay:13s;">
-Und eine dreifache Schnur lässt sich nicht so schnell zerreißen.“
-</span><br><br>
-
-<span class="fade" style="animation-delay:16s;">
-— Prediger 4:9–12
-</span>
+<span class="fade" style="animation-delay:1s;">„Zwei sind besser als einer,</span><br>
+<span class="fade" style="animation-delay:4s;">denn wenn einer fällt, hilft ihm der andere wieder auf.“</span><br><br>
+<span class="fade" style="animation-delay:7s;">„Jemand kann einen Einzelnen leicht überwältigen,</span><br>
+<span class="fade" style="animation-delay:10s;">doch zwei zusammen können gegen ihn standhalten.</span><br>
+<span class="fade" style="animation-delay:13s;">Und eine dreifache Schnur lässt sich nicht so schnell zerreißen.“</span><br><br>
+<span class="fade" style="animation-delay:16s;">— Prediger 4:9–12</span>
 </p>
-
 <p class="fade" style="animation-delay:19s;">
 ❤️ Solltest du dich für mich entscheiden,
 werde ich derjenige sein.
 </p>
-
 <button class="yes" onclick="toPage4()">Weiter ❤️</button>
 </div>
 </div>
@@ -208,30 +203,37 @@ mein Platz ist dort, wo du bist.
 <!-- Seite 5 -->
 <div id="page5" class="page">
 <div class="card">
-
 <h2 class="fade" style="animation-delay:1s;">Und noch etwas…</h2>
-
 <p class="fade" style="animation-delay:4s; font-size:18px;">
 Wenn du wieder überrascht bist,<br>
 dass es so kurz ist,<br><br>
-
 dann darfst du wissen:<br>
 Dieses „Kurze“ hat mich<br>
 eine Woche gekostet.<br><br>
-
 Nicht, weil ich musste —<br>
 sondern weil ich wollte.<br><br>
-
 Und ich hoffe,<br>
 dass du uns nicht länger im Weg stehst,<br>
 sondern uns beiden wirklich eine Chance gibst.<br><br>
-
 Denn ich weiß, was wir sein könnten.<br>
 Und alles andere würde ich nicht wählen.
 </p>
-
 <h1 class="final-name">Kani ❤️</h1>
+<br><br>
+<button class="yes" onclick="toPage6()">Unser Moment 🤍</button>
+</div>
+</div>
 
+<!-- Seite 6 -->
+<div id="page6" class="page" style="background:black;">
+<div class="card" style="background:transparent; box-shadow:none;">
+<img src="wir.jpg" class="zoom-image" onclick="revealSecret()">
+<h2 class="fade" style="animation-delay:2s; margin-top:20px;">
+Kanat + Rojbin 🤍
+</h2>
+<div id="secret" class="hidden-message">
+Ich wünschte, du könntest dich durch meine Augen sehen.
+</div>
 </div>
 </div>
 
@@ -294,7 +296,20 @@ function toPage5(){
   document.body.classList.add("dark");
 }
 
-/* Herzen */
+function toPage6(){
+  show("page6");
+  document.body.classList.remove("dark");
+  document.body.style.background = "black";
+}
+
+function revealSecret(){
+  const secret = document.getElementById("secret");
+  secret.classList.add("show");
+  setTimeout(()=>{
+    secret.classList.remove("show");
+  },5000);
+}
+
 function heartRain(){
   const heart=document.createElement("div");
   heart.innerText="❤️";
@@ -309,7 +324,6 @@ function heartRain(){
 
 heartInterval = setInterval(heartRain,600);
 
-/* Intro */
 setTimeout(()=>{
   document.getElementById("intro").style.display="none";
   show("page1");
